@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Resume Builder | Victory Hour</title>
+  <style>
+    :root {
+      --bg: #081426;
+      --panel: #10213d;
+      --panel-2: #132949;
+      --gold: #c9a84c;
+      --text: #f5f1e8;
+      --muted: #c6d0e0;
+      --border: rgba(201, 168, 76, 0.25);
+      --white: #ffffff;
+      --ink: #111827;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #07111f 0%, #0b1d3a 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 18px 0 28px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 5vw, 3.1rem);
+      line-height: 1.08;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 1.05rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.2);
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+    }
+
+    .intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .actions, .resume-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .resume-toolbar {
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--gold);
+      color: #081426;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .ghost {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .tips {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+    }
+
+    .tips h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .tips ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .resume-shell {
+      position: sticky;
+      top: 20px;
+    }
+
+    .resume-paper {
+      background: var(--white);
+      color: var(--ink);
+      border-radius: 18px;
+      padding: 34px;
+      min-height: 900px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      border: 1px solid #d9dee7;
+    }
+
+    .resume-header {
+      border-bottom: 2px solid #e8edf4;
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+    }
+
+    .resume-name {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .resume-contact {
+      color: #4b5563;
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .resume-section {
+      margin-bottom: 22px;
+    }
+
+    .resume-section h3 {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #1f2937;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 6px;
+    }
+
+    .resume-section p {
+      margin: 0;
+      white-space: pre-line;
+      line-height: 1.65;
+      color: #1f2937;
+    }
+
+    .resume-placeholder {
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    .small-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .resume-shell { position: static; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 16px; }
+      .panel, .resume-paper { padding: 18px; }
+      .row { grid-template-columns: 1fr; }
+      .resume-name { font-size: 1.65rem; }
+      .actions, .resume-toolbar { flex-direction: column; }
+      button { width: 100%; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .hero, .panel, .resume-toolbar, .small-note { display: none !important; }
+      .page { max-width: 100%; padding: 0; margin: 0; }
+      .layout { display: block; }
+      .resume-paper {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        min-height: auto;
+        padding: 0.5in;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="eyebrow">Victory Hour Resume Tool</div>
+      <h1>Free Resume Builder</h1>
+      <p>Create a clean, printable resume in minutes. Use the AI writing helper to turn rough notes into stronger resume wording.</p>
+    </section>
+
+    <div class="layout">
+      <section class="panel">
+        <h2>Build Your Resume</h2>
+        <p class="intro">Fill in what you can. Keep it honest, simple, and clear. You do not need perfect words to start.</p>
+
+        <div class="row">
+          <div>
+            <label for="name">Full Name</label>
+            <input id="name" placeholder="Example: Moe Elahresh" />
+          </div>
+          <div>
+            <label for="target">Target Job Title</label>
+            <input id="target" placeholder="Example: Warehouse Associate" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" placeholder="Example: yourname@email.com" />
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" placeholder="Example: 555-555-5555" />
+          </div>
+        </div>
+
+        <label for="location">City / Province / Country</label>
+        <input id="location" placeholder="Example: Windsor, Ontario, Canada" />
+
+        <label for="summary">Professional Summary</label>
+        <textarea id="summary" placeholder="Write rough notes about who you are, what you do, and what kind of work you want."></textarea>
+        <div class="hint">Tip: Focus on reliability, willingness to learn, teamwork, safety, customer service, or hands-on experience.</div>
+
+        <label for="experience">Work Experience</label>
+        <textarea id="experience" placeholder="Example:
+Production Worker — ABC Foods — 2022 to 2025
+- packed products
+- cleaned area
+- helped team"></textarea>
+        <div class="hint">You can write rough notes. Click “AI Write My Resume” to improve the wording.</div>
+
+        <label for="education">Education / Training</label>
+        <textarea id="education" placeholder="Example:
+High School Diploma
+Forklift Certification
+Food Safety Training"></textarea>
+
+        <label for="skills">Skills</label>
+        <textarea id="skills" placeholder="Example:
+Teamwork, Cleaning, Basic computer skills, Packaging, Customer service"></textarea>
+
+        <label for="extra">Extra Information (Optional)</label>
+        <textarea id="extra" placeholder="Example:
+Volunteer work, languages spoken, certifications, availability, achievements"></textarea>
+
+        <div class="actions">
+          <button class="primary" onclick="generateResume()">Generate Resume</button>
+          <button class="secondary" onclick="writeWithAI()">AI Write My Resume</button>
+          <button class="secondary" onclick="loadSample()">Load Example</button>
+          <button class="ghost" onclick="clearForm()">Clear Form</button>
+        </div>
+
+        <div class="tips">
+          <h3>AI Writing Help</h3>
+          <ul>
+            <li>Fill in the target job title first.</li>
+            <li>Write rough notes, then click “AI Write My Resume.”</li>
+            <li>Edit anything you want before printing or saving.</li>
+          </ul>
+        </div>
+
+        <div class="tips">
+          <h3>What makes a strong resume?</h3>
+          <ul>
+            <li>Keep it clear and easy to scan.</li>
+            <li>Show reliability, effort, and useful skills.</li>
+            <li>Use short action-based bullet lines.</li>
+            <li>Match your summary to the job you want.</li>
+            <li>Print or save it after generating.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="resume-shell">
+        <div class="resume-toolbar">
+          <button class="primary" onclick="window.print()">Print / Save as PDF</button>
+          <button class="secondary" onclick="copyResumeText()">Copy Resume Text</button>
+        </div>
+
+        <div class="resume-paper" id="resumePaper">
+          <div class="resume-header">
+            <div class="resume-name" id="r_name">Your Name Here</div>
+            <div class="resume-contact" id="r_contact">Email | Phone | Location</div>
+          </div>
+
+          <div class="resume-section">
+            <h3>Professional Summary</h3>
+            <p id="r_summary" class="resume-placeholder">Your summary will appear here after you generate your resume.</p>
+          </div>
+
+          <div class="resume-section">
+            <h3>Work Experience</h3>
+            <p id="r_experience" class="resume-placeholder">Your work history will appear here.</p>
+          </div>
+
+          <div class="resume-section">
+            <h3>Education / Training</h3>
+            <p id="r_education" class="resume-placeholder">Your education and training will appear here.</p>
+          </div>
+
+          <div class="resume-section">
+            <h3>Skills</h3>
+            <p id="r_skills" class="resume-placeholder">Your skills will appear here.</p>
+          </div>
+
+          <div class="resume-section" id="extraSection">
+            <h3>Additional Information</h3>
+            <p id="r_extra" class="resume-placeholder">Optional extra details will appear here.</p>
+          </div>
+        </div>
+
+        <div class="small-note">On most phones and computers, the “Print / Save as PDF” button lets you save this as a PDF.</div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function value(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function setText(id, text, placeholder) {
+      const el = document.getElementById(id);
+      if (text) {
+        el.textContent = text;
+        el.classList.remove('resume-placeholder');
+      } else {
+        el.textContent = placeholder;
+        el.classList.add('resume-placeholder');
+      }
+    }
+
+    function generateResume() {
+      const name = value('name') || 'Your Name Here';
+      const email = value('email');
+      const phone = value('phone');
+      const location = value('location');
+      const target = value('target');
+      const summary = value('summary');
+      const experience = value('experience');
+      const education = value('education');
+      const skills = value('skills');
+      const extra = value('extra');
+
+      document.getElementById('r_name').textContent = name;
+
+      const contactParts = [email, phone, location].filter(Boolean);
+      let contactLine = contactParts.join(' | ');
+      if (target) contactLine = target + (contactLine ? ' | ' + contactLine : '');
+      document.getElementById('r_contact').textContent = contactLine || 'Email | Phone | Location';
+
+      setText('r_summary', summary, 'Your summary will appear here after you generate your resume.');
+      setText('r_experience', experience, 'Your work history will appear here.');
+      setText('r_education', education, 'Your education and training will appear here.');
+      setText('r_skills', skills, 'Your skills will appear here.');
+      setText('r_extra', extra, 'Optional extra details will appear here.');
+
+      document.getElementById('extraSection').style.display = extra ? 'block' : 'none';
+    }
+
+    function writeWithAI() {
+      const target = value('target') || 'team member';
+      const summaryField = document.getElementById('summary');
+      const experienceField = document.getElementById('experience');
+      const skillsField = document.getElementById('skills');
+      const educationField = document.getElementById('education');
+      const extraField = document.getElementById('extra');
+
+      const currentSummary = summaryField.value.trim();
+      const currentExperience = experienceField.value.trim();
+      const currentSkills = skillsField.value.trim();
+      const currentEducation = educationField.value.trim();
+      const currentExtra = extraField.value.trim();
+
+      const skillWords = currentSkills
+        ? currentSkills.split(/,|\n/).map(function(s) { return s.trim(); }).filter(Boolean)
+        : ['teamwork', 'reliability', 'communication', 'organization', 'willingness to learn'];
+
+      const skillsPhrase = skillWords.slice(0, 5).join(', ');
+
+      if (!currentSummary) {
+        summaryField.value = 'Motivated and dependable ' + target.toLowerCase() + ' with a strong focus on ' + skillsPhrase + '. Brings a positive attitude, willingness to learn, and commitment to showing up ready to work. Seeking an opportunity to contribute, grow, and deliver consistent results in a fast-paced environment.';
+      } else {
+        summaryField.value = 'Dependable ' + target.toLowerCase() + ' with experience in ' + skillsPhrase + '. ' + capitalizeSentence(currentSummary.replace(/\s+/g, ' ').trim()) + ' Focused on reliability, teamwork, and getting the job done well. Ready to contribute, learn quickly, and support a strong team.';
+      }
+
+      if (currentExperience) {
+        experienceField.value = improveExperience(currentExperience);
+      } else {
+        experienceField.value = capitalizeWords(target) + '\n- Supported daily operations in a fast-paced environment\n- Followed instructions carefully and completed tasks on time\n- Worked well with others to meet team goals\n- Maintained a clean, organized, and safe work area\n- Adapted quickly and helped where needed';
+      }
+
+      if (!currentSkills) {
+        skillsField.value = 'Reliability, Teamwork, Communication, Time Management, Organization, Willingness To Learn, Problem Solving, Customer Service';
+      } else {
+        skillsField.value = normalizeSkills(currentSkills);
+      }
+
+      if (!currentEducation) {
+        educationField.value = 'Add your education, certificates, licences, or short training courses here.';
+      }
+
+      if (!currentExtra) {
+        extraField.value = 'Available to start soon. Open to learning. Flexible and ready to contribute.';
+      }
+
+      generateResume();
+    }
+
+    function improveExperience(text) {
+      const blocks = text.split(/\n\n+/).map(function(block) { return block.trim(); }).filter(Boolean);
+      return blocks.map(function(block) {
+        const lines = block.split('\n').map(function(line) { return line.trim(); }).filter(Boolean);
+        if (!lines.length) return '';
+        const first = lines[0];
+        const rest = lines.slice(1).map(function(line) {
+          const cleaned = line.replace(/^[-•]\s*/, '').trim();
+          if (!cleaned) return '';
+          return '- ' + strengthenBullet(cleaned);
+        }).filter(Boolean);
+        return [first].concat(rest).join('\n');
+      }).filter(Boolean).join('\n\n');
+    }
+
+    function strengthenBullet(text) {
+      const t = text.replace(/\.$/, '').trim();
+      const lower = t.toLowerCase();
+      if (lower.indexOf('helped ') === 0) return 'Supported ' + t.slice(7);
+      if (lower.indexOf('did ') === 0) return 'Handled ' + t.slice(3);
+      if (lower.indexOf('made ') === 0) return 'Prepared ' + t.slice(5);
+      if (lower.indexOf('kept ') === 0) return 'Maintained ' + t.slice(5);
+      if (lower.indexOf('cleaned ') === 0) return 'Cleaned ' + t.slice(8);
+      if (lower.indexOf('used ') === 0) return 'Used ' + t.slice(5);
+      return capitalizeSentence(t);
+    }
+
+    function normalizeSkills(text) {
+      const seen = {};
+      return text.split(/,|\n/).map(function(s) {
+        return capitalizeWords(s.trim());
+      }).filter(Boolean).filter(function(s) {
+        const key = s.toLowerCase();
+        if (seen[key]) return false;
+        seen[key] = true;
+        return true;
+      }).join(', ');
+    }
+
+    function capitalizeWords(text) {
+      return text.replace(/\w\S*/g, function(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      });
+    }
+
+    function capitalizeSentence(text) {
+      if (!text) return '';
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function clearForm() {
+      ['name','target','email','phone','location','summary','experience','education','skills','extra'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('r_name').textContent = 'Your Name Here';
+      document.getElementById('r_contact').textContent = 'Email | Phone | Location';
+      setText('r_summary', '', 'Your summary will appear here after you generate your resume.');
+      setText('r_experience', '', 'Your work history will appear here.');
+      setText('r_education', '', 'Your education and training will appear here.');
+      setText('r_skills', '', 'Your skills will appear here.');
+      setText('r_extra', '', 'Optional extra details will appear here.');
+      document.getElementById('extraSection').style.display = 'block';
+    }
+
+    function loadSample() {
+      document.getElementById('name').value = 'Jordan Smith';
+      document.getElementById('target').value = 'Warehouse Associate';
+      document.getElementById('email').value = 'jordansmith@email.com';
+      document.getElementById('phone').value = '555-123-4567';
+      document.getElementById('location').value = 'Windsor, Ontario, Canada';
+      document.getElementById('summary').value = 'Reliable and hardworking team member with hands-on experience in fast-paced environments. Strong attention to safety, organization, and meeting daily targets.';
+      document.getElementById('experience').value = 'Warehouse Helper — FastShip Logistics — 2023 to 2025\n- picked and packed orders\n- kept warehouse clean\n- helped receive deliveries\n\nProduction Worker — Northline Foods — 2021 to 2023\n- packed food products\n- followed safety procedures\n- supported production line';
+      document.getElementById('education').value = 'High School Diploma\nForklift Training\nWorkplace Safety Training';
+      document.getElementById('skills').value = 'Teamwork, Packaging, Inventory support, Cleaning and sanitation, Basic computer skills, Time management, Reliability';
+      document.getElementById('extra').value = 'Available for full-time work. English spoken. Open to evenings and weekends.';
+      writeWithAI();
+    }
+
+    function copyResumeText() {
+      const text = [
+        document.getElementById('r_name').textContent,
+        document.getElementById('r_contact').textContent,
+        '',
+        'Professional Summary',
+        document.getElementById('r_summary').textContent,
+        '',
+        'Work Experience',
+        document.getElementById('r_experience').textContent,
+        '',
+        'Education / Training',
+        document.getElementById('r_education').textContent,
+        '',
+        'Skills',
+        document.getElementById('r_skills').textContent,
+        '',
+        'Additional Information',
+        document.getElementById('r_extra').textContent
+      ].join('\n');
+
+      navigator.clipboard.writeText(text).then(function() {
+        alert('Resume text copied.');
+      }).catch(function() {
+        alert('Could not copy automatically. Please select and copy manually.');
+      });
+    }
+  </script>
+</body>
+</html>
